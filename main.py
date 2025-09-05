@@ -1,9 +1,21 @@
 import random
+import os
 
-from frontend.display import display_man, display_hint, display_answer
+from assets.art import hangman_art
+from frontend.display import display_man, display_hint, display_answer,delete
+from backend.database import all_words,showall,add_one,create_table,add_sample
 
-from backend.word_files import add_word, show_words, load_words
 
+def checks():
+    file_path = "wordlist.db"
+    if os.path.exists(file_path):
+        print(f"The file {file_path} is there")
+    elif not os.path.exists(file_path):
+        print("Genrtating sample word list")
+        create_table()
+        #this adds a simple list to let people try out hangman without haveing to add there own
+        sample_list = [("apple",),("orange",),("banana",),("coconut",),("pineapple",)]
+        add_sample(sample_list)
 
 def startup():
     startup = True
@@ -13,7 +25,8 @@ def startup():
         print("1) start hangman")
         print("2) Add new word to hangman game")
         print("3) Show all words")
-        print("4) Quit")
+        print("4) Delete one word")
+        print("5) Quit")
         print("***********")
         
         choice = input("Please enter your choice (1-4) ")
@@ -24,21 +37,24 @@ def startup():
 
         choice = int(choice)
 
-        if choice >= 5:
+        if choice >= 6:
             print("Invalid input")
         if choice == 1:
             main()
         if choice == 2:
             word = str(input("What word would you like to add? ")).lower()
-            add_word(word)
+            add_one(word)
         if choice == 3:
-            show_words()
+            showall()
+        if choice == 4:
+            delete()
         if choice == 4:
             quit()
-            
+        
 def main():
-    show = load_words()
-    answer = random.choice(show)
+    word = all_words()
+    answer = random.choice(word)
+    print(answer)
     hint = ["_"] * len(answer)
     wrong_guesses = 0
     guessed_letters = set()
@@ -65,7 +81,7 @@ def main():
                     hint[i] = guess
 
         else:
-            wrong_guesses +=1
+            wrong_guesses += 1
         
         if "_" not in hint:
             display_man(wrong_guesses)
@@ -73,7 +89,7 @@ def main():
             print("YOU WIN!")
             is_running = False
 
-        elif wrong_guesses >= len(art) - 1:
+        elif wrong_guesses >= len(hangman_art) - 1:
             display_man(wrong_guesses)
             display_answer(answer)
             print("YOU LOSE!")
@@ -86,4 +102,6 @@ def main():
         quit()
 
 if __name__ == "__main__":
+    checks()
     startup()
+    
