@@ -1,95 +1,13 @@
 import random
 
+from frontend.display import display_man, display_hint, display_answer
 
-# Dictionary of key:()
-hangman_art = {
-    0: (" __    ",
-        "|  |   ",
-        "|      ",
-        "|      ",
-        "|      "),
-    1: (" __    ",
-        "|  |   ",
-        "|  o   ",
-        "|      ",
-        "|      "),
-    2: (" __    ",
-        "|  |   ",
-        "|  o   ",
-        "|  |   ",
-        "|      "),
-    3: (" __    ",
-        "|  |   ",
-        "|  o   ",
-        "| /|   ",
-        "|      "),
-    4: (" __    ",
-        "|  |   ",
-        "|  o   ",
-        "| /|\\ ",
-        "|      "),
-    5: (" __    ",
-        "|  |   ",
-        "|  o   ",
-        "| /|\\ ",
-        "| /    "),
-    6: (" __    ",
-        "|  |   ",
-        "|  o   ",
-        "| /|\\ ",
-        "| / \\ ")}
+from backend.word_files import add_word, show_words, load_words
 
-def display_man(wong_guesses):
-    print("**************")
-    for line in hangman_art[wong_guesses]:
-        print(line)
-    print("**************")
-
-def display_hint(hint):
-    print(" ".join(hint))
-
-def display_answer(answer):
-    print(" ".join(answer))
-
-def add_word(text):
-    file_path = "wordslist.txt"
-
-    try:
-        with open(file_path, "a") as file:
-            file.write("," +text)
-            print({f"added {text} to the list of words"})
-    except FileExistsError:
-        print("That file already exists")
-
-def show_words():
-    file_path = "wordslist.txt"
-
-    try:
-        with open(file_path, "r") as file:
-            content = file.read()
-            words = content.split(',')
-            for word in words:
-                print(word)
-    except FileNotFoundError:
-        print("That file was not found")
-    except PermissionError: 
-        print("You do not have permission to read that file")
-            
-def load_words():
-    file_path = "wordslist.txt"
-
-    try:
-        with open(file_path, "r") as file:
-            content = file.read()
-            words = content.split(',')
-            return words
-    except FileNotFoundError:
-        print("That file was not found")
-    except PermissionError: 
-        print("You do not have permission to read that file")
 
 def startup():
     startup = True
+
     while startup:
         print("***********")
         print("1) start hangman")
@@ -97,15 +15,25 @@ def startup():
         print("3) Show all words")
         print("4) Quit")
         print("***********")
-        chioce = int(input("Please enter your choice (1-4) "))
-        if chioce == 1:
+        
+        choice = input("Please enter your choice (1-4) ")
+        
+        if not choice.isdigit():
+            print("Invalid input. Please enter a number between 1 and 4.")
+            continue  # Skip to the next loop iteration
+
+        choice = int(choice)
+
+        if choice >= 5:
+            print("Invalid input")
+        if choice == 1:
             main()
-        if chioce == 2:
+        if choice == 2:
             word = str(input("What word would you like to add? ")).lower()
             add_word(word)
-        if chioce == 3:
+        if choice == 3:
             show_words()
-        if chioce == 4:
+        if choice == 4:
             quit()
             
 def main():
@@ -145,7 +73,7 @@ def main():
             print("YOU WIN!")
             is_running = False
 
-        elif wrong_guesses >= len(hangman_art) - 1:
+        elif wrong_guesses >= len(art) - 1:
             display_man(wrong_guesses)
             display_answer(answer)
             print("YOU LOSE!")
