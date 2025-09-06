@@ -44,11 +44,10 @@ def showall():
     # Crate a cursor
     c = conn.cursor()
     # Query the Database
-    c.execute("SELECT rowid, * FROM words")
-    items = c.fetchall()
+    c.execute("SELECT rowid, * FROM words LIMIT 10")
+    words = c.fetchall()
     
-    for item in items:
-        print(item[0], item[1])
+    return words
 
     # Close our connection with the db file
     conn.close()
@@ -66,19 +65,17 @@ def all_words():
     # Close our connection with the db file
     conn.close()
     # Flatten the list of tuples to a list of strings
-    return [item[0] for item in items]
-
-    
+    return [item[0] for item in items]  
     
 # Delete one word form the DB
-def delete_one(id):
+def delete_one(selected_id):
     # Connect to database file
     conn = sqlite3.connect("wordlist.db")
     # Crate a cursor
     c = conn.cursor()
     
     # Remove one word from the table
-    c.execute("DELETE FROM words WHERE rowid = (?)", id)
+    c.execute("DELETE FROM words WHERE rowid = (?)", selected_id)
 
     # Commit our comand and close connection
     conn.commit()
