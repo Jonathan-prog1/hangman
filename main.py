@@ -2,7 +2,7 @@ import random
 import os
 
 from assets.art import hangman_art
-from frontend.display import display_man, display_hint, display_answer,delete,main_menu, add_word,display_gusses, display_allwords
+from frontend.display import display_man, display_hint, display_answer,delete,main_menu, add_word,display_gusses, display_allwords, edit_word
 from backend.database import all_words,create_table,add_sample
 
 
@@ -26,7 +26,7 @@ def startup():
     while startup:
         # Displays all the choices of what to do
         main_menu()
-        choice = input("Please enter your choice (1-5) ")
+        choice = input("Please enter your choice (1-6) ")
         
         # checks to see if you entered a number
         if not choice.isdigit():
@@ -36,7 +36,7 @@ def startup():
         # Changes the input string to a number
         choice = int(choice)
         # Checks to make the number is within the rang for all the ops of the main menu
-        if choice >= 6:
+        if choice >= 7:
             print("Invalid input")
         # Starts the hangman game
         if choice == 1:
@@ -44,14 +44,17 @@ def startup():
         # Lets you add one word to the db
         if choice == 2:
             add_word()
-        # Shows all words in the db
+        # Lets you edit a word in the db
         if choice == 3:
+            edit_word()
+        # Shows all words in the db
+        if choice == 4:
             display_allwords()
         # Lets you delete one word from the db
-        if choice == 4:
+        if choice == 5:
             delete()
         # Kills the programe
-        if choice == 5:
+        if choice == 6:
             quit()
         
 def main():

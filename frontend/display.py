@@ -1,15 +1,28 @@
 from assets.art import hangman_art
-from backend.database import showall,delete_one,add_one
+from backend.database import showall,delete_one,add_one, one_word, update_word
 
 def main_menu():
     print("***********")
     print("1) start hangman")
     print("2) Add new word to hangman game")
-    print("3) Show all words")
-    print("4) Delete one word")
-    print("5) Quit")
+    print("3) Edit word")
+    print("4) Show all words")
+    print("5) Delete one word")
+    print("6) Quit")
     print("***********")
+    
 
+# This is a helper fuc to see if the input is only letters
+def check_input_word(word):
+    if not word.isalpha():
+        print("Please enter letters a-z")
+
+# This is a helper fuc to see if the input is a number
+def check_input_number(number):
+    if not number.isdigit():
+        print("Please Enter a number")
+
+# This is the menu to add a new word to the db
 def add_word():
     adding_word = True
     while adding_word:
@@ -37,19 +50,59 @@ def display_answer(answer):
 def display_gusses(guesses):
     print(' '.join(guesses))
 
+# This is the menu for deleting a word from the db
 def delete():
-    display_allwords()
-    print("11: Back")
-    selected_id = input("Please enter the number to delete: ")
-    if not selected_id.isdigit():
-        print("invalid input")
-    elif selected_id == "11":
-        return None
-    elif selected_id <"11":
-        delete_one(selected_id)
+    deleteing = True
+    while deleteing:
         display_allwords()
+        print("11: Back")
+        selected_id = input("Please enter the number to delete: ")
+        check_input_number(selected_id)
+        if selected_id == "11":
+            deleteing = False
+            break
+        elif selected_id <"11":
+            delete_one(selected_id)
+            display_allwords()
+            deleteing = False
 
+# This displays all words to the screen
 def display_allwords():
     words = showall()
     for word in words:
         print(f"{word[0]}: {word[1]}")
+
+# This is the menu to change a word in the db
+def edit_word():
+    editing = True
+    is_not_word = True
+    while editing:
+        display_allwords()
+        print("11: back")
+        selected_id = input("What word do you want to edit? ")
+        
+        # checks to see if you entered a number
+        check_input_number(selected_id)
+
+        # brings you back to the main menu
+        if selected_id == "11":
+            editing = False
+            break
+        
+        item = one_word(selected_id)
+        while is_not_word:
+            for word in item:
+                print(f"you selected {word} to edit")
+            new_word = input("What would you like to change it to? ")
+            if new_word.isalpha():
+                is_not_word = False
+            check_input_word(new_word)
+
+        update_word(new_word, selected_id)
+        display_allwords()
+        choice = input("would you like to edit anther word?(y/n) ")
+        # Brings you back to the main menu
+        if choice == "n":
+            editing = False
+        elif choice == "y":
+            continue

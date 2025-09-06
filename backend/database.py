@@ -46,11 +46,11 @@ def showall():
     # Query the Database
     c.execute("SELECT rowid, * FROM words LIMIT 10")
     words = c.fetchall()
-    
-    return words
-
     # Close our connection with the db file
     conn.close()
+    return words
+
+    
 
 # Returns all words to get picked at random
 def all_words():
@@ -81,6 +81,29 @@ def delete_one(selected_id):
     conn.commit()
     conn.close()
 
-if __name__ == "__main__":    
-    #create_table()
-    showall()
+# Update Records
+def update_word(word, selected_id):
+    # Connect to database file
+    conn = sqlite3.connect("wordlist.db")
+    # Crate a cursor
+    c = conn.cursor()
+    
+    # updates one value to the table
+    c.execute("UPDATE words SET name = ? WHERE rowid = ? ", (word, selected_id))
+    
+    # Commit our comand and close connection
+    conn.commit()
+    conn.close()
+
+# Get one Word
+def one_word(selected_id):
+    # Connect to database file
+    conn = sqlite3.connect("wordlist.db")
+    # Crate a cursor
+    c = conn.cursor()
+    # Query the Database
+    c.execute("SELECT * FROM words WHERE rowid = (?)", selected_id)
+    word = c.fetchone()
+    # Close our connection with the db file
+    conn.close()
+    return word
