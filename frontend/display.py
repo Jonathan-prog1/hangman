@@ -1,6 +1,6 @@
 from assets.art import hangman_art
 from backend.database import showall,delete_one,add_one, one_word, update_word
-
+from backend.helper import check_input_number, check_input_word
 def main_menu():
     print("***********")
     print("1) start hangman")
@@ -10,17 +10,6 @@ def main_menu():
     print("5) Delete one word")
     print("6) Quit")
     print("***********")
-    
-
-# This is a helper fuc to see if the input is only letters
-def check_input_word(word):
-    if not word.isalpha():
-        print("Please enter letters a-z")
-
-# This is a helper fuc to see if the input is a number
-def check_input_number(number):
-    if not number.isdigit():
-        print("Please Enter a number")
 
 # This is the menu to add a new word to the db
 def add_word():
