@@ -1,5 +1,5 @@
 from assets.art import hangman_art
-from backend.database import showall,delete_one,add_one, one_word, update_word
+from backend import database
 from backend.helper import check_input_number, check_input_word
 def main_menu():
     print("***********")
@@ -16,7 +16,7 @@ def add_word():
     adding_word = True
     while adding_word:
         word = str(input("What word would you like to add? ")).lower()
-        add_one(word)
+        database.add_one(word)
         choice = input("Do you whant to add another word?(y/n) ")
 
         if choice == "n":
@@ -51,13 +51,13 @@ def delete():
             deleteing = False
             break
         elif selected_id <"11":
-            delete_one(selected_id)
+            database.delete_one(selected_id)
             display_allwords()
             deleteing = False
 
 # This displays all words to the screen
 def display_allwords():
-    words = showall()
+    words = database.showall()
     for word in words:
         print(f"{word[0]}: {word[1]}")
 
@@ -78,7 +78,7 @@ def edit_word():
             editing = False
             break
         
-        item = one_word(selected_id)
+        item = database.one_word(selected_id)
         while is_not_word:
             for word in item:
                 print(f"you selected {word} to edit")
@@ -87,7 +87,7 @@ def edit_word():
                 is_not_word = False
             check_input_word(new_word)
 
-        update_word(new_word, selected_id)
+        database.update_word(new_word, selected_id)
         display_allwords()
         choice = input("would you like to edit anther word?(y/n) ")
         # Brings you back to the main menu

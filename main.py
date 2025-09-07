@@ -2,7 +2,7 @@ import random
 import os
 
 from assets.art import hangman_art
-from frontend.display import display_man, display_hint, display_answer,delete,main_menu, add_word,display_gusses, display_allwords, edit_word
+from frontend import display
 from backend.database import all_words,create_table,add_sample
 
 
@@ -25,7 +25,7 @@ def startup():
 
     while startup:
         # Displays all the choices of what to do
-        main_menu()
+        display.main_menu()
         choice = input("Please enter your choice (1-6) ")
         
         # checks to see if you entered a number
@@ -43,16 +43,16 @@ def startup():
             main()
         # Lets you add one word to the db
         if choice == 2:
-            add_word()
+            display.add_word()
         # Lets you edit a word in the db
         if choice == 3:
-            edit_word()
+            display.edit_word()
         # Shows all words in the db
         if choice == 4:
-            display_allwords()
+            display.display_allwords()
         # Lets you delete one word from the db
         if choice == 5:
-            delete()
+            display.delete()
         # Kills the programe
         if choice == 6:
             quit()
@@ -74,13 +74,13 @@ def main():
 
     while is_running:
         #this displays the art for hangman
-        display_man(wrong_guesses)
+        display.display_man(wrong_guesses)
 
         # This prints all the letter spots
-        display_hint(hint)
+        display.display_hint(hint)
 
         # This displays all the letters you have guessed so far
-        display_gusses(guessed_letters)
+        display.display_gusses(guessed_letters)
         
         # This is where the user inputs there guess of what letter is on the board
         guess = input("Enter a letter: ").lower()
@@ -107,15 +107,15 @@ def main():
         
         # This sees if you have fully guessed the word and if you have before you make 6 wrong letters you win
         if "_" not in hint:
-            display_man(wrong_guesses)
-            display_answer(answer)
+            display.display_man(wrong_guesses)
+            display.display_answer(answer)
             print("YOU WIN!")
             is_running = False
 
         # This stops the game if you do 6 wrong words and tells you what the word was
         elif wrong_guesses >= len(hangman_art) - 1:
-            display_man(wrong_guesses)
-            display_answer(answer)
+            display.display_man(wrong_guesses)
+            display.display_answer(answer)
             print("YOU LOSE!")
             is_running = False
 
