@@ -29,10 +29,8 @@ def add_one(word):
 
 # This adds a few words to a new table for peole who are first loading this  up
 def add_sample(list):
-    # Connect to database file
-    conn = sqlite3.connect("wordlist.db")
-    # Crate a cursor
-    c = conn.cursor()
+    # Connect to database
+    conn, c = connect()
     
     c.executemany("INSERT INTO words VALUES (?)",(list))
 
