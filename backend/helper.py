@@ -7,3 +7,4 @@ def check_input_number(number):
 def check_input_word(word):
     if not word.isalpha():
         print("Please enter letters a-z")
+        return 1

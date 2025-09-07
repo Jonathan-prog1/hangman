@@ -45,7 +45,7 @@ def showall():
     # Connect to database
     conn, c = connect()
     # Query the Database
-    c.execute("SELECT rowid, * FROM words LIMIT 10")
+    c.execute("SELECT rowid, * FROM words")
     words = c.fetchall()
     # Close our connection with the db file
     conn.close()
@@ -69,7 +69,7 @@ def delete_one(selected_id):
     conn, c = connect()
     
     # Remove one word from the table
-    c.execute("DELETE FROM words WHERE rowid = (?)", selected_id)
+    c.execute(f"DELETE FROM words WHERE rowid = {selected_id}" )
 
     # Commit our comand and close connection
     conn.commit()

@@ -14,15 +14,24 @@ def main_menu():
 # This is the menu to add a new word to the db
 def add_word():
     adding_word = True
+    word = ""
     while adding_word:
-        word = str(input("What word would you like to add? ")).lower()
+        
+        while word == "":
+            
+            word = str(input("What word would you like to add? ")).lower()
+            
+            check = check_input_word(word)
+            if check == 1:
+                word = ""
+                continue
+       
         database.add_one(word)
         choice = input("Do you whant to add another word?(y/n) ")
-
         if choice == "n":
-            adding_word = False
+            break
         if choice == "y":
-            continue
+            add_word()
 
 def display_man(wong_guesses):
     print("**************")
@@ -44,16 +53,15 @@ def delete():
     deleteing = True
     while deleteing:
         display_allwords()
-        print("11: Back")
+        print("0: Back")
         selected_id = input("Please enter the number to delete: ")
         check_input_number(selected_id)
-        if selected_id == "11":
+        if selected_id == "0":
             deleteing = False
             break
-        elif selected_id <"11":
-            database.delete_one(selected_id)
-            display_allwords()
-            deleteing = False
+        
+        database.delete_one(selected_id)
+        display_allwords()
 
 # This displays all words to the screen
 def display_allwords():
