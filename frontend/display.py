@@ -55,7 +55,9 @@ def delete():
         display_allwords()
         print("0: Back")
         selected_id = input("Please enter the number to delete: ")
-        check_input_number(selected_id)
+        check = check_input_number(selected_id)
+        if check == 1:
+            continue
         if selected_id == "0":
             deleteing = False
             break
@@ -79,7 +81,9 @@ def edit_word():
         selected_id = input("What word do you want to edit? ")
         
         # checks to see if you entered a number
-        check_input_number(selected_id)
+        check =check_input_number(selected_id)
+        if check == 1:
+            continue
 
         # brings you back to the main menu
         if selected_id == "11":
@@ -93,7 +97,9 @@ def edit_word():
             new_word = input("What would you like to change it to? ")
             if new_word.isalpha():
                 is_not_word = False
-            check_input_word(new_word)
+            check = check_input_word(new_word)
+            if check == 1:
+                continue
 
         database.update_word(new_word, selected_id)
         display_allwords()
