@@ -8,7 +8,7 @@ from backend.database import all_words,create_table,add_sample
 
 def checks():
     # The path to the db
-    file_path = "wordlist.db"
+    file_path = "backend/wordlist.db"
     # This checks to see if the DB is there
     if os.path.exists(file_path):
         print(f"The file {file_path} is there")
