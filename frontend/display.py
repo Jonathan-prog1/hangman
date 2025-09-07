@@ -77,7 +77,7 @@ def edit_word():
     is_not_word = True
     while editing:
         display_allwords()
-        print("11: back")
+        print("0: back")
         selected_id = input("What word do you want to edit? ")
         
         # checks to see if you entered a number
@@ -86,7 +86,7 @@ def edit_word():
             continue
 
         # brings you back to the main menu
-        if selected_id == "11":
+        if selected_id == "0":
             editing = False
             break
         
