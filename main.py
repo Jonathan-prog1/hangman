@@ -3,8 +3,8 @@ import os
 
 from assets.art import hangman_art
 from frontend import display
-from backend.database import all_words,create_table,add_sample
-
+from backend.database import Database
+db = Database()
 
 def checks():
     # The path to the db
@@ -15,14 +15,14 @@ def checks():
     # this checks to see if there is no DB and if there is not it creates it and adds some sample words
     elif not os.path.exists(file_path):
         print("Genrtating sample word list")
-        create_table()
+        db.create_table()
         #this adds a simple list to let people try out hangman without haveing to add there own
         sample_list = [("apple",),("orange",),("banana",),("coconut",),("pineapple",)]
-        add_sample(sample_list)
+        db.add_sample(sample_list)
 
 def startup():
     startup = True
-
+    
     while startup:
         # Displays all the choices of what to do
         display.main_menu()
@@ -58,8 +58,9 @@ def startup():
             quit()
         
 def main():
+
     # This gets all the words from the db
-    word = all_words()
+    word = db.all_words()
     # This picks a word at random to use for hangman
     answer = random.choice(word)
     # This sets _ for all the letters of the word till you gusse the letter

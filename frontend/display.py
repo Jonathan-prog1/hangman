@@ -1,6 +1,7 @@
 from assets.art import hangman_art
-from backend import database
+from backend.database import Database 
 from backend.helper import check_input_number, check_input_word
+
 def main_menu():
     print("***********")
     print("1) start hangman")
@@ -11,27 +12,30 @@ def main_menu():
     print("6) Quit")
     print("***********")
 
-# This is the menu to add a new word to the db
 def add_word():
-    adding_word = True
-    word = ""
-    while adding_word:
+    """This is the menu to add a new word to the db"""
+    db = Database()
+    while True:
         
-        while word == "":
-            
-            word = str(input("What word would you like to add? ")).lower()
-            
-            check = check_input_word(word)
-            if check == 1:
-                word = ""
+        while True:
+            word = ""
+            try:
+                word = str(input("What word would you like to add? ")).lower()
+                check = check_input_word(word) # this raises ValueError if invalid
+            except ValueError as e:
+                print(e)
                 continue
-       
-        database.add_one(word)
-        choice = input("Do you whant to add another word?(y/n) ")
-        if choice == "n":
-            break
-        if choice == "y":
-            add_word()
+            if check == 0:
+                db.add_one(word)
+            while True:
+                choice = input("Do you whant to add another word?(y/n) ")
+                if choice == "n":
+                    db.close()
+                    return # exit function
+                elif choice == "y":
+                    break  # break inner loop and prompt for next word
+                else:
+                    print("Please enter y or n.")
 
 def display_man(wong_guesses):
     print("**************")
@@ -48,41 +52,47 @@ def display_answer(answer):
 def display_gusses(guesses):
     print(' '.join(guesses))
 
-# This is the menu for deleting a word from the db
 def delete():
+    """This is the menu for deleting a word from the db"""
+    db = Database()
     deleteing = True
     while deleteing:
         display_allwords()
         print("0: Back")
-        selected_id = input("Please enter the number to delete: ")
-        check = check_input_number(selected_id)
-        if check == 1:
-            continue
+        try:
+            selected_id = input("Please enter the number to delete: ")
+            check = check_input_number(selected_id)
+        except ValueError as e:
+                print(e)
+                continue
         if selected_id == "0":
             deleteing = False
+            db.close()
             break
         
-        database.delete_one(selected_id)
+        db.delete_one(selected_id)
         display_allwords()
 
-# This displays all words to the screen
 def display_allwords():
-    words = database.showall()
+    """This displays all words to the screen"""
+    db = Database()
+    words = db.showall()
     for word in words:
         print(f"{word[0]}: {word[1]}")
 
-# This is the menu to change a word in the db
 def edit_word():
+    """This is the menu to change a word in the db"""
+    db = Database()
     editing = True
     is_not_word = True
     while editing:
         display_allwords()
         print("0: back")
-        selected_id = input("What word do you want to edit? ")
-        
-        # checks to see if you entered a number
-        check =check_input_number(selected_id)
-        if check == 1:
+        try:
+            selected_id = input("What word do you want to edit? ")
+            check =check_input_number(selected_id)
+        except ValueError as e:
+            print(e)
             continue
 
         # brings you back to the main menu
@@ -90,22 +100,26 @@ def edit_word():
             editing = False
             break
         
-        item = database.one_word(selected_id)
+        item = db.one_word(selected_id)
         while is_not_word:
             for word in item:
                 print(f"you selected {word} to edit")
-            new_word = input("What would you like to change it to? ")
-            if new_word.isalpha():
-                is_not_word = False
-            check = check_input_word(new_word)
-            if check == 1:
+            try:
+                new_word = input("What would you like to change it to? ")
+                check = check_input_word(new_word)
+                break
+            except ValueError as e:
+                print(e)
                 continue
 
-        database.update_word(new_word, selected_id)
+        db.update_word(new_word, selected_id)
         display_allwords()
         choice = input("would you like to edit anther word?(y/n) ")
         # Brings you back to the main menu
         if choice == "n":
+            db.close()
             editing = False
         elif choice == "y":
             continue
+        else:
+            print("Please enter y or n.")
