@@ -6,7 +6,7 @@ from frontend import display
 from backend.database import Database
 
 def checks():
-    db = Database()
+    
     # The path to the db
     file_path = "backend/wordlist.db"
     # This checks to see if the DB is there
@@ -14,6 +14,7 @@ def checks():
         print(f"The file {file_path} is there")
     # this checks to see if there is no DB and if there is not it creates it and adds some sample words
     elif not os.path.exists(file_path):
+        db = Database()
         print("Genrtating sample word list")
         db.create_table()
         #this adds a simple list to let people try out hangman without haveing to add there own
