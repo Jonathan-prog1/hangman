@@ -4,9 +4,9 @@ import os
 from assets.art import hangman_art
 from frontend import display
 from backend.database import Database
-db = Database()
 
 def checks():
+    db = Database()
     # The path to the db
     file_path = "backend/wordlist.db"
     # This checks to see if the DB is there
@@ -58,6 +58,7 @@ def startup():
             quit()
         
 def main():
+    db = Database()
 
     # This gets all the words from the db
     word = db.all_words()

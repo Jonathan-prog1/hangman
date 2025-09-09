@@ -14,8 +14,6 @@ class Database:
         
         # Create Table
         self.cursor.execute("CREATE TABLE words (name text)")
-        # Commit our comand
-        self.cursor.commit()
 
     def add_one(self, word:str):
         """add one word to the words table"""
