@@ -1,11 +1,16 @@
-# This is a helper fuc to see if the input is a number
-def check_input_number(number):
-    if not number.isdigit():
-        print("Please Enter a number")
-        return 1
 
-# This is a helper fuc to see if the input is only letters
-def check_input_word(word):
+def check_input_number(number:str):
+    """This is a helper fuc to see if the input is a number in a string"""
+    if not number.isdigit():
+        #print("Please Enter a number")
+        raise ValueError("Please Enter a number")
+    return 0
+
+
+def check_input_word(word:str):
+    """This is a helper fuc to see if the input is only letters in a string"""
+    if not isinstance(word, str):
+        raise ValueError("Please Enter a letter a-z")
     if not word.isalpha():
-        print("Please enter letters a-z")
-        return 1
+        raise ValueError("Please Enter a letter a-z")
+    return 0
