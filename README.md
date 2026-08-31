@@ -21,7 +21,7 @@ now all you have to do is run it with for windows
 python main.py
 ```
 
-or for Mac or Linix
+or for Mac or Linux run  this comand.
 ```
 python3 main.py
 ```
