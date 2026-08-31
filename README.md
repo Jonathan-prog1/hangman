@@ -16,7 +16,12 @@ git clone https://github.com/Jonathan-prog1/hangman.git
 cd hangman
 ```
 
-now all you have to do is run it with
+now all you have to do is run it with for windows
 ```
 python main.py
+```
+
+or for Mac or Linix
+```
+python3 main.py
 ```
